@@ -9,7 +9,7 @@ Some code cleanup was done to allow for clean compilation with g++.
 Instantiation is slow, but continued use shows speed increases over native
 v8::Array implementation.
 
-For more information, see [Faster (sometimes) Associative Arrays with Node.js](http://legitimatesounding.com/blog/).
+For more information, see [Faster (sometimes) Associative Arrays with Node.js](http://legitimatesounding.com/blog/Faster_sometimes_Associative_Arrays_with_Node_js.html).
 
 ## In a nutshell
 
@@ -26,6 +26,12 @@ against native associative arrays.
 Testing:
 
     cd tests
+    node big.js
+    node multiple.js
+
+Benchmarking:
+
+    cd benchmark
     node native.js
     node judy.js
     
@@ -34,7 +40,7 @@ Testing:
 
 ## Synopsis
 
-Using:
+Usage:
 
     var judy   = require('judy');
     
