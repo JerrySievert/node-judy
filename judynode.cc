@@ -75,7 +75,6 @@ int jg_set(void *judy, uchar *key, uchar *value, unsigned long len, int type) {
         data->length = len;
         data->type   = type;
 
-//        printf("set: %s => %d, %d, %d, %d, %d\n", key, (int) value[0], (int) value[1], (int) value[2], (int) value[3], (int) value[4]);
         memcpy(data->ptr, value, len);
         
         *cell = (judyslot) data;
@@ -96,7 +95,6 @@ uchar *jg_get(void *judy, uchar *key, unsigned long *len, int *type) {
         *len  = data->length;
         *type = data->type;
         uchar *value = (uchar *) data->ptr;
-//        printf("get: %s => %d, %d, %d, %d, %d\n", key, (int) value[0], (int) value[1], (int) value[2], (int) value[3], (int) value[4]);
 
         return value;
     }
@@ -116,7 +114,7 @@ void jg_delete(void *judy, uchar *key) {
             }
             free((void *) data);
         }
-        //free((void *) *cell);
+
         judy_del((Judy *) judy);
     }
 }
