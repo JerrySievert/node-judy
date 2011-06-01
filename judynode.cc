@@ -24,7 +24,9 @@ THE SOFTWARE.
 
 #include <node.h>
 #include <node_events.h>
-#include <string.h>
+#include <node_buffer.h>
+#include <memory.h>
+#include <stdio.h>
 
 #include "judy.h"
 #include "judynode.h"
@@ -36,7 +38,14 @@ using namespace node;
 
 #define MAX_JUDY_SIZE  1024
 
+#define FROM_BUFFER 0
+#define FROM_STRING 1
 
+struct store {
+    unsigned long length;
+    uchar        *ptr;
+    int           type;
+};
 
 
 void *jg_init(int size) {
@@ -49,28 +58,47 @@ void *jg_init(int size) {
     return judy_open(size);
 }
 
-int jg_set(void *judy, uchar *key, uchar *value) {
+int jg_set(void *judy, uchar *key, uchar *value, unsigned long len, int type) {
     judyslot *cell;
 
     cell = judy_cell((Judy *) judy, key, (size_t) strlen((const char *) key));
     if (cell && *cell) {
-        free((void *)*cell);
+        struct store *data = (struct store *) *cell;
+        if (data->ptr) {
+            free((void *) data->ptr);
+        }
+        free((void *) data);
     }
     if (cell) {
-        *cell = (judyslot) strdup((const char *)value);
+        struct store *data = (struct store *) malloc(sizeof(struct store));
+        data->ptr    = (uchar *) malloc(len);
+        data->length = len;
+        data->type   = type;
+
+//        printf("set: %s => %d, %d, %d, %d, %d\n", key, (int) value[0], (int) value[1], (int) value[2], (int) value[3], (int) value[4]);
+        memcpy(data->ptr, value, len);
+        
+        *cell = (judyslot) data;
         return 1;
     }
 
     return 0;
 }
 
-uchar *jg_get(void *judy, uchar *key) {
+uchar *jg_get(void *judy, uchar *key, unsigned long *len, int *type) {
     judyslot *cell;
     
     cell = judy_slot((Judy *) judy, key, (size_t) strlen((const char *) key));
 
     if (cell) {
-        return (uchar *) *cell;
+        struct store *data = (struct store *) *cell;
+
+        *len  = data->length;
+        *type = data->type;
+        uchar *value = (uchar *) data->ptr;
+//        printf("get: %s => %d, %d, %d, %d, %d\n", key, (int) value[0], (int) value[1], (int) value[2], (int) value[3], (int) value[4]);
+
+        return value;
     }
     return NULL;
 }
@@ -81,7 +109,14 @@ void jg_delete(void *judy, uchar *key) {
     cell = judy_slot((Judy *) judy, key, (size_t) strlen((const char *) key));
 
     if (cell) {
-        free((void *) *cell);
+        struct store *data = (struct store *) *cell;
+        if (data) {
+            if (data->ptr) {
+                free((void *) data->ptr);
+            }
+            free((void *) data);
+        }
+        //free((void *) *cell);
         judy_del((Judy *) judy);
     }
 }
@@ -126,11 +161,26 @@ Handle<Value> JudyNode::Get(const Arguments& args) {
     
     String::Utf8Value key(args[0]->ToString());
     
-    uchar *get = jg_get(judy_obj->container, (uchar *) *key);
+    unsigned long len;
+    int type;
+    uchar *get = jg_get(judy_obj->container, (uchar *) *key, &len, &type);
     if (get == NULL) {
         return Undefined();
     }
-    return scope.Close(String::New((const char *) get));
+    
+    if (type == FROM_BUFFER) {
+        node::Buffer *slowBuffer = node::Buffer::New(len);
+        memcpy(node::Buffer::Data(slowBuffer), get, len);
+    
+        v8::Local<v8::Object> globalObj = v8::Context::GetCurrent()->Global();
+        v8::Local<v8::Function> bufferConstructor = v8::Local<v8::Function>::Cast(globalObj->Get(v8::String::New("Buffer")));
+        v8::Handle<v8::Value> constructorArgs[3] = { slowBuffer->handle_, v8::Integer::New(len), v8::Integer::New(0) };
+        v8::Local<v8::Object> actualBuffer = bufferConstructor->NewInstance(3, constructorArgs);
+    
+        return scope.Close(actualBuffer);
+    }
+    
+    return scope.Close(String::New((const char *) get, len));
 }
 
 Handle<Value> JudyNode::Set(const Arguments& args) {
@@ -141,9 +191,15 @@ Handle<Value> JudyNode::Set(const Arguments& args) {
 
     }
     String::Utf8Value key(args[0]->ToString());
-    String::Utf8Value value(args[1]->ToString());
 
-    jg_set(judy_obj->container, (uchar *) *key, (uchar *) *value);
+    if (Buffer::HasInstance(args[1])) {
+      Handle<Object> buffer = args[1]->ToObject();
+      jg_set(judy_obj->container, (uchar *) *key, (uchar *) Buffer::Data(buffer), Buffer::Length(buffer), FROM_BUFFER);
+    } else {
+      String::Utf8Value data(args[1]->ToString());
+      jg_set(judy_obj->container, (uchar *) *key, (uchar *) *data, data.length(), FROM_STRING);
+    }
+
     return Undefined();
 }
 
