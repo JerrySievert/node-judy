@@ -1,0 +1,10 @@
+{
+  "name"        : "node-judy",
+  "description" : "Judy Arrays Implemented in Node.js",
+  "version"     : "0.0.1",
+  "author"      : "Jerry Sievert",
+  "keywords"    : ["array", "judy", "radix", "tries", "burst"],
+  "bugs"        : { "url": "https://github.com/JerrySievert/node-judy/issues" },
+  "homepage"    : "https://github.com/JerrySievert/node-judy",
+  "engines"     : { "node" : ">=0.6.19" },
+}
