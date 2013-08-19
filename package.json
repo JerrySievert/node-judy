@@ -1,7 +1,7 @@
 {
   "name": "judy",
   "description": "Judy Arrays Implemented in Node.js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/JerrySievert/node-judy",
   "repository": {
     "type": "git",
