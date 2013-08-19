@@ -1,0 +1,20 @@
+{
+  "name": "judy",
+  "description": "Judy Arrays Implemented in Node.js",
+  "version": "1.0.2",
+  "homepage": "https://github.com/JerrySievert/node-judy",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/denji/node-judy.git"
+  },
+  "dependencies" : {
+    "benchmark": "latest",
+    "optimist": "latest",
+    "vows": "latest",
+    "assert": "latest"
+  },
+  "author": "Jerry Sievert (http://legitimatesounding.com/)",
+  "keywords": ["array", "judy", "radix", "tries", "burst"],
+  "bugs": { "url": "https://github.com/JerrySievert/node-judy/issues" },
+  "engines": { "node" : ">=0.6.19" }
+}
