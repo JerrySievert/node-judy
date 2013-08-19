@@ -17,7 +17,7 @@ For more information, see [Faster (sometimes) Associative Arrays with Node.js](h
 - Adds set/get/delete functionality
 
 ## Building
-    node-waf configure build
+    node-gyp configure build
 
 ## Testing and Benchmarking
 There are a couple of tests, as well as a couple of benchmarks to compare

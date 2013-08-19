@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 */
 
-var judy_lib = require('./build/default/judy');
+var judy_lib = require('./build/Release/judy.node');
 
 function Judy(size) {
     size = size || 1024;
