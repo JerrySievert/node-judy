@@ -251,3 +251,5 @@ extern "C" void init(Handle<Object> target) {
 
     JudyNode::Initialize(target);
 };
+
+NODE_MODULE(judy, init)
