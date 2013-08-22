@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 
 #include <node.h>
+#include <v8.h>
 #include <node_buffer.h>
 #include <memory.h>
 #include <stdio.h>
