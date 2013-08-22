@@ -27,7 +27,7 @@ THE SOFTWARE.
 #include <memory.h>
 #include <stdio.h>
 
-#include <judy64nb.h>
+#include "judy64nb.h"
 #include "judy.h"
 
 using namespace v8;

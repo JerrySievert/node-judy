@@ -1,2 +1,5 @@
-node_modules
-build
+.DS_Store
+._.DS_Store
+node_modules/
+build/
+npm-debug.log
