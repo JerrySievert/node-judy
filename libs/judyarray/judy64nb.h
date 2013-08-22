@@ -108,6 +108,8 @@ typedef struct {
 	JudyStack stack[1];	// current cursor
 } Judy;
 
+#ifdef ASKITIS
+
 #if JUDY_key_size < 8
 #define JUDY_max	JUDY_16
 #else
