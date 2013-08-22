@@ -1792,6 +1792,7 @@ FILE **in;
 	return 0;
 }
 
+/*
 //	compilation:
 //	cc -O3 judy64j.c
 
@@ -2060,6 +2061,6 @@ time_t start[1], stop[1];
 #endif
 	judy_close(judy);
 	return 0;
-}
+}*/
 #endif
 

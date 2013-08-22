@@ -44,14 +44,27 @@ struct store {
     int           type;
 };
 
-void *jg_init(int size) {
+// JudyNode::JudyNode() {};
+JudyNode::~JudyNode() {
+    if (this->container == NULL) {
+        return;
+    }
+    JudySlot *cell = (JudySlot *) judy_strt((Judy *) this->container, NULL, 0);
+    while (cell) {
+        free((void *) *cell);
+        judy_del((Judy *) this->container);
+        cell = judy_nxt((Judy *) this->container);
+    }
+}
+
+void *jg_init(int size, int depth = 0) {
     if (!size) {
         size = MAX_JUDY_SIZE;
     } else if (size > MAX_JUDY_SIZE) {
         return NULL;
     }
     
-    return judy_open(size, 0);
+    return judy_open(size, depth);
 }
 
 int jg_set(void *judy, uchar *key, uchar *value, unsigned long len, int type) {
@@ -116,8 +129,6 @@ void jg_delete(void *judy, uchar *key) {
 }
 
 void JudyNode::Initialize (Handle<Object> target) {
-    HandleScope scope;
-
     Local<FunctionTemplate> t = FunctionTemplate::New(New);
 
     t->InstanceTemplate()->SetInternalFieldCount(1);
@@ -125,16 +136,17 @@ void JudyNode::Initialize (Handle<Object> target) {
     NODE_SET_PROTOTYPE_METHOD(t, "get",    JudyNode::Get);
     NODE_SET_PROTOTYPE_METHOD(t, "set",    JudyNode::Set);
     NODE_SET_PROTOTYPE_METHOD(t, "delete", JudyNode::Delete);
-    NODE_SET_PROTOTYPE_METHOD(t, "keys", JudyNode::Keys);
+    // TODO: Alias
+    // NODE_SET_PROTOTYPE_METHOD(t, "rm",     JudyNode::Delete);
+    // NODE_SET_PROTOTYPE_METHOD(t, "del",    JudyNode::Delete);
+    NODE_SET_PROTOTYPE_METHOD(t, "keys",   JudyNode::Keys);
 
     target->Set(String::NewSymbol("JudyNode"), t->GetFunction());
 }
 
 Handle<Value> JudyNode::New(const Arguments& args) {
-    HandleScope scope;
-
     JudyNode *judy_obj = new JudyNode();
-    judy_obj->container = jg_init(1024);
+    judy_obj->container = jg_init(1024, 0);
     
     if (judy_obj->container == NULL) {
         return Undefined();
@@ -230,22 +242,7 @@ Handle<Value> JudyNode::Keys(const Arguments& args) {
     return scope.Close(arr);
 }
 
-JudyNode::~JudyNode() {
-    if (this->container == NULL) {
-        return;
-    }
-    JudySlot *cell = (JudySlot *) judy_strt((Judy *) this->container, NULL, 0);
-    while (cell) {
-        free((void *) *cell);
-        judy_del((Judy *) this->container);
-        cell = judy_nxt((Judy *) this->container);
-    }
-}
-
-
-extern "C" void init(Handle<Object> target) {
-    HandleScope scope;
-
+void init(Handle<Object> target) {
     JudyNode::Initialize(target);
 };
 
