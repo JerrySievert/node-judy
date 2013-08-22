@@ -50,7 +50,7 @@ void *jg_init(int size) {
         return NULL;
     }
     
-    return judy_open(size);
+    return judy_open(size, 0);
 }
 
 int jg_set(void *judy, uchar *key, uchar *value, unsigned long len, int type) {
