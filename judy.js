@@ -1,6 +1,6 @@
 /*
 
-© 2011 by Jerry Sievert
+Copyright © 2011-2013 by Jerry Sievert
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 */
 
-var judy_lib = require('./build/Release/judy.node');
+var judy_lib = require('./build/Release/judy');
 
 function Judy(size) {
     size = size || 1024;
