@@ -1,6 +1,6 @@
 /*
 
-© 2011 by Jerry Sievert
+Copyright © 2011-2013 by Jerry Sievert
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,16 +27,13 @@ THE SOFTWARE.
 #include <memory.h>
 #include <stdio.h>
 
+#include <judy64nb.h>
 #include "judy.h"
-#include "judynode.h"
 
 using namespace v8;
 using namespace node;
 
-
-
 #define MAX_JUDY_SIZE  1024
-
 #define FROM_BUFFER 0
 #define FROM_STRING 1
 
@@ -45,7 +42,6 @@ struct store {
     uchar        *ptr;
     int           type;
 };
-
 
 void *jg_init(int size) {
     if (!size) {
@@ -58,7 +54,7 @@ void *jg_init(int size) {
 }
 
 int jg_set(void *judy, uchar *key, uchar *value, unsigned long len, int type) {
-    judyslot *cell;
+    JudySlot *cell;
 
     cell = judy_cell((Judy *) judy, key, (size_t) strlen((const char *) key));
     if (cell && *cell) {
@@ -76,7 +72,7 @@ int jg_set(void *judy, uchar *key, uchar *value, unsigned long len, int type) {
 
         memcpy(data->ptr, value, len);
         
-        *cell = (judyslot) data;
+        *cell = (JudySlot) data;
         return 1;
     }
 
@@ -84,7 +80,7 @@ int jg_set(void *judy, uchar *key, uchar *value, unsigned long len, int type) {
 }
 
 uchar *jg_get(void *judy, uchar *key, unsigned long *len, int *type) {
-    judyslot *cell;
+    JudySlot *cell;
     
     cell = judy_slot((Judy *) judy, key, (size_t) strlen((const char *) key));
 
@@ -101,7 +97,7 @@ uchar *jg_get(void *judy, uchar *key, unsigned long *len, int *type) {
 }
 
 void jg_delete(void *judy, uchar *key) {
-    judyslot *cell;
+    JudySlot *cell;
     
     cell = judy_slot((Judy *) judy, key, (size_t) strlen((const char *) key));
 
@@ -219,7 +215,7 @@ Handle<Value> JudyNode::Keys(const Arguments& args) {
     Local<Array> arr = Array::New();
     uint32_t counter = 0;
     
-    judyslot *cell = (judyslot *) judy_strt((Judy *) judy_obj->container, NULL, 0);
+    JudySlot *cell = (JudySlot *) judy_strt((Judy *) judy_obj->container, NULL, 0);
     uchar buf[1024];
     while (cell) {
         judy_key((Judy *) judy_obj->container, buf, 1024);
@@ -237,7 +233,7 @@ JudyNode::~JudyNode() {
     if (this->container == NULL) {
         return;
     }
-    judyslot *cell = (judyslot *) judy_strt((Judy *) this->container, NULL, 0);
+    JudySlot *cell = (JudySlot *) judy_strt((Judy *) this->container, NULL, 0);
     while (cell) {
         free((void *) *cell);
         judy_del((Judy *) this->container);

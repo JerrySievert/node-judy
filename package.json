@@ -5,7 +5,7 @@
   "homepage": "https://github.com/JerrySievert/node-judy",
   "repository": {
     "type": "git",
-    "url": "git://github.com/denji/node-judy.git"
+    "url": "git://github.com/JerrySievert/node-judy.git"
   },
   "dependencies" : {
     "benchmark": "latest",
