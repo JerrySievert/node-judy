@@ -242,8 +242,9 @@ Handle<Value> JudyNode::Keys(const Arguments& args) {
     return scope.Close(arr);
 }
 
-void init(Handle<Object> target) {
-    JudyNode::Initialize(target);
+extern "C" {
+    static void init(Handle<Object> target) {
+        JudyNode::Initialize(target);
+    }
+    NODE_MODULE(judy, init);
 };
-
-NODE_MODULE(judy, init)
