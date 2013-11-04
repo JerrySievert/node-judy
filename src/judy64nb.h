@@ -119,26 +119,26 @@ typedef struct {
 #define JUDY_max	JUDY_32
 #endif
 
-void *judy_open (uint max, uint depth);
-void judy_close (Judy *judy);
-void *judy_alloc (Judy *judy, uint type);
-void *judy_data (Judy *judy, uint amt);
-void *judy_clone (Judy *judy);
-void judy_free (Judy *judy, void *block, int type);
-uint judy_key (Judy *judy, uchar *buff, uint max);
-JudySlot *judy_slot (Judy *judy, uchar *buff, uint max);
-JudySlot *judy_promote (Judy *judy, JudySlot *next, int idx, judyvalue value, int keysize);
-void judy_radix (Judy *judy, JudySlot *radix, uchar *old, int start, int slot, int keysize, uchar key, uint depth);
-void judy_splitnode (Judy *judy, JudySlot *next, uint size, uint keysize, uint depth);
-JudySlot *judy_first (Judy *judy, JudySlot next, uint off, uint depth);
-JudySlot *judy_last (Judy *judy, JudySlot next, uint off, uint depth);
-JudySlot *judy_end (Judy *judy);
-JudySlot *judy_nxt (Judy *judy);
-JudySlot *judy_prv (Judy *judy);
-JudySlot *judy_del (Judy *judy);
-JudySlot *judy_strt (Judy *judy, uchar *buff, uint max);
-void judy_splitspan (Judy *judy, JudySlot *next, uchar *base);
-JudySlot *judy_cell (Judy *judy, uchar *buff, uint max);
+void *judy_open (uint, uint);
+void judy_close (Judy *);
+void *judy_alloc (Judy *, uint);
+void *judy_data (Judy *, uint);
+void *judy_clone (Judy *);
+void judy_free (Judy *, void *, int);
+uint judy_key (Judy *, uchar *, uint);
+JudySlot *judy_slot (Judy *, uchar *, uint);
+JudySlot *judy_promote (Judy *, JudySlot *, int, judyvalue, int);
+void judy_radix (Judy *, JudySlot *, uchar *, int, int, int, uchar, uint);
+void judy_splitnode (Judy *, JudySlot *, uint, uint, uint);
+JudySlot *judy_first (Judy *, JudySlot, uint, uint);
+JudySlot *judy_last (Judy *, JudySlot, uint, uint);
+JudySlot *judy_end (Judy *);
+JudySlot *judy_nxt (Judy *);
+JudySlot *judy_prv (Judy *);
+JudySlot *judy_del (Judy *);
+JudySlot *judy_strt (Judy *, uchar *, uint);
+void judy_splitspan (Judy *, JudySlot *, uchar *);
+JudySlot *judy_cell (Judy *, uchar *, uint);
 
 
 #endif /* JUDY_H */

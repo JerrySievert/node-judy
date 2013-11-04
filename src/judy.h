@@ -24,9 +24,11 @@ THE SOFTWARE.
 
 class JudyNode : public node::ObjectWrap {
     public:
-        void *container;
-        ~JudyNode();
         static void Initialize(v8::Handle<v8::Object> target);
+    //private:
+        void *container;
+     //   JudyNode();
+        ~JudyNode();
         static v8::Handle<v8::Value> New(const v8::Arguments& args);
         static v8::Handle<v8::Value> Set(const v8::Arguments& args);
         static v8::Handle<v8::Value> Get(const v8::Arguments& args);
@@ -34,3 +36,7 @@ class JudyNode : public node::ObjectWrap {
         static v8::Handle<v8::Value> Keys(const v8::Arguments& args);
 };
 
+void *jg_init(int, int);
+int jg_set(void *, uchar *, uchar *, unsigned long, int);
+uchar *jg_get(void *, uchar *, unsigned long *, int *);
+void jg_delete(void *, uchar *);
