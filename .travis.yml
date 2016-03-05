@@ -1,5 +1,22 @@
 language: node_js
 node_js:
-  - 0.6
-  - 0.8
-  - 0.10 # development version of 0.8, may be unstable
+  - '5'
+  - '4.1'
+  - '4.0'
+  - '0.12'
+  - '0.10'
+addons:
+  apt:
+    sources:
+      - llvm-toolchain-precise-3.8
+      - ubuntu-toolchain-r-test
+    packages:
+      - clang-3.8
+      - g++-5
+install:
+    - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+    - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.8" CC="clang-3.8"; fi
+before_install:
+  - npm install -g node-gyp
+before_script:
+  - node-gyp configure build
