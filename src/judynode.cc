@@ -1,5 +1,9 @@
 /*
-    © 2011-2013 by Jerry Sievert
+  Judy Arrays allow for fast and memory efficient access to in-memory hash tables.
+  Instantiation is slow, but continued use shows speed increases over native v8::Array implementation.
+  Some code cleanup was done to allow for clean compilation with g++ or clang++.
+
+  © 2011-2013 by Jerry Sievert
 */
 
 #include <memory.h>
