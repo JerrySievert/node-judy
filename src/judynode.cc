@@ -141,7 +141,7 @@ NAN_METHOD(JudyNode::New) {
     self->Wrap(info.This());
     info.GetReturnValue().Set(info.This());
   } else { // Turn it into a construct call.
-    v8::Local<v8::Function> cons =  Nan::New<Function>(constructor);
+    Local<Function> cons =  Nan::New<Function>(constructor);
     info.GetReturnValue().Set(cons->NewInstance());
   }
 }
@@ -168,8 +168,10 @@ NAN_METHOD(JudyNode::Get) {
     // slowBuffer->CopyBuffer(get, len);
 
     Local<Object> globalObj = Nan::GetCurrentContext()->Global();
-    Local<Function> bufferConstructor = Local<Function>::Cast(
-                                          globalObj->Get(Nan::New("Buffer").ToLocalChecked()));
+    Local<Function> bufferConstructor =
+      Local<Function>::Cast(
+        globalObj->Get(Nan::New("Buffer").ToLocalChecked())
+      );
     Local<Value> constructorArgs[3] = {
       slowBuffer,
       Nan::New<Integer>((int32_t) len),
