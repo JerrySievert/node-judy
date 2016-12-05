@@ -7,9 +7,9 @@
   "author": "Jerry Sievert (http://legitimatesounding.com/)",
   "repository": "https://github.com/JerrySievert/node-judy.git",
   "scripts": {
-    "configure": "node-gyp configure",
-    "build": "node-gyp build",
-    "test": "node tests/big.js && node tests/multiple.js",
+    "release": "node-gyp configure && node-gyp build",
+    "debug": "node-gyp configure --debug && node-gyp build --debug",
+    "test": "node test/big.js && node test/multiple.js",
     "bench": "node bench/native.js --count=2000 && node bench/judy.js --count=2000"
   },
   "keywords": [

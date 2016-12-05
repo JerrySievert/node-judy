@@ -41,9 +41,9 @@ class JudyNode : public Nan::ObjectWrap {
   /// static Nan::Persistent<v8::Function> constructor_func;
 };
 
-// void *jg_init(int, int);
-// int jg_set(void *, uchar *, uchar *, unsigned long, int);
-// uchar *jg_get(void *, uchar *, unsigned long *, int *);
-// void jg_delete(void *, uchar *);
+void *jg_init(int, int);
+int jg_set(void *, uchar *, uchar *, unsigned long, int);
+uchar *jg_get(void *, uchar *, unsigned long *, int *);
+void jg_delete(void *, uchar *);
 
 #endif /* JUDYNODE_H */

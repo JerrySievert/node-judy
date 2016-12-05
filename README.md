@@ -18,7 +18,8 @@ This specific Judy implementation is based on work by [Karl Malbrain](https://gi
 ## Building
 
 ```sh
-node-gyp configure build
+npm i -g yarn
+yarn run release
 ```
 
 ## Testing and Benchmarking
@@ -28,18 +29,15 @@ against native associative arrays.
 Testing:
 
 ```sh
-node tests/big.js
-node tests/multiple.js
+# npm run test
+yarn run test
 ```
 
 Benchmarking:
 
 ```sh
-node bench/native.js
-node bench/judy.js
-
-node bench/native.js --count=2000
-node bench/judy.js --count=2000
+# npm run bench
+yarn run bench
 ```
 
 ## Synopsis
