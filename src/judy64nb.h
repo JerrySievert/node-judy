@@ -1,5 +1,5 @@
-#ifndef JUDY_H
-#define JUDY_H
+#ifndef JUDY64NB_H
+#define JUDY64NB_H
 
 #ifdef linux
 	#define _FILE_OFFSET_BITS 64
@@ -141,4 +141,4 @@ void judy_splitspan (Judy *, JudySlot *, uchar *);
 JudySlot *judy_cell (Judy *, uchar *, uint);
 
 
-#endif /* JUDY_H */
+#endif /* JUDY64NB_H */

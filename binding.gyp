@@ -2,7 +2,7 @@
     'targets': [{
         'target_name': 'judy',
         'defines': [ '_LARGEFILE_SOURCE', '_FILE_OFFSET_BITS=64' ],
-        'sources': [ 'src/judy.cc' ],
+        'sources': [ 'src/judynode.cc' ],
         'include_dirs': [ '<!(node -e "require(\'nan\')")' ],
         'configurations': {
             'Release': {
